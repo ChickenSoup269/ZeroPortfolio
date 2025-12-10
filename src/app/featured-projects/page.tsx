@@ -1,43 +1,42 @@
 "use client"
 
 import Link from "next/link"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
+  DialogTrigger,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Youtube, ArrowRight } from "lucide-react"
 
-// 1. CẬP NHẬT DỮ LIỆU: Thêm 'imageUrl'
 const projects = [
   {
-    id: "e-commerce-platform",
-    title: "E-Commerce Platform",
-    description: "Nền tảng bán hàng trực tuyến với Next.js.",
+    id: "bookmark-manager",
+    title: "Zero Bookmark Manager",
+    description: "Extension quản lý bookmark nhanh chóng và tiện lợi.",
     videoId: "3mcsG_p_j7s",
-    // Link ảnh mẫu (bạn thay bằng link thật của bạn)
     imageUrl:
-      "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80",
+      "https://github.com/ChickenSoup269/imagesForRepo/raw/main/img_repo_extension_bookmarks/about_bookmark/1.png?raw=true",
   },
   {
-    id: "task-management",
-    title: "Task Management",
-    description: "Ứng dụng quản lý công việc cho nhóm.",
-    videoId: "LXb3EKWsInQ",
-    // Link ảnh mẫu
+    id: "zero-movie",
+    title: "Zero Movie Theater",
+    description:
+      "Nền tảng rạp chiếu phim thông minh với trải nghiệm đặt vé siêu tốc.",
+    videoId: "Hv5FI1u5by8",
     imageUrl:
-      "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?w=800&q=80",
+      "https://github.com/ChickenSoup269/Zero_Movie/raw/main/frontend/public/screenshots/trangchinh.png",
+  },
+  {
+    id: "steam-clone",
+    title: "SteamClone",
+    description: "Website mua game trực tuyến giao diện giống Steam.",
+    videoId: "zZd_RgvPfic",
+    imageUrl:
+      "https://github.com/ChickenSoup269/SteamClone/raw/master/Screenshot/Screenshot%202024-07-25%20203434.png",
   },
 ]
 
@@ -46,35 +45,39 @@ export default function FeaturedProjects() {
     <div className="max-w-7xl mx-auto px-4 py-12">
       <h1 className="text-4xl font-bold mb-8 text-center">Featured Projects</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project) => (
           <Card
             key={project.id}
-            className="flex flex-col h-full overflow-hidden group hover:shadow-lg transition-all duration-300"
+            // SỬA ĐỔI QUAN TRỌNG:
+            // 1. p-0: Xóa padding mặc định để ảnh tràn viền
+            // 2. overflow-hidden: Cắt ảnh thừa ở các góc bo tròn
+            // 3. h-auto: Chiều cao tự động co giãn theo nội dung (xóa khoảng trắng thừa)
+            className="group relative flex flex-col p-0 overflow-hidden rounded-xl border shadow-md hover:shadow-xl transition-all duration-300 h-auto"
           >
-            <CardHeader>
-              <CardTitle>{project.title}</CardTitle>
-              <CardDescription>{project.description}</CardDescription>
-            </CardHeader>
+            {/* PHẦN ẢNH */}
+            <div className="relative w-full aspect-video overflow-hidden">
+              <img
+                src={project.imageUrl}
+                alt={project.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
 
-            <CardContent className="flex-1">
-              {/* 2. CSS CHO ẢNH ĐẠI DIỆN */}
-              <div className="relative w-full aspect-video rounded-md overflow-hidden mb-4 border bg-muted">
-                <img
-                  src={project.imageUrl}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+              {/* Lớp phủ Overlay */}
+              <div className="absolute inset-0 bg-black/70 flex flex-col justify-center items-center p-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 className="text-white font-bold text-xl mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  {project.title}
+                </h3>
+                <p className="text-gray-200 text-sm translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 line-clamp-3">
+                  {project.description}
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground line-clamp-2">
-                Đây là mô tả ngắn gọn về công nghệ và tính năng chính của dự
-                án...
-              </p>
-            </CardContent>
+            </div>
 
-            <CardFooter>
-              <div className="w-full grid grid-cols-2 gap-3">
-                {/* 1. BUTTON VIEW DEMO (POPUP) */}
+            {/* PHẦN FOOTER */}
+            {/* mt-auto để đẩy footer xuống đáy nếu các card có chiều cao khác nhau */}
+            <div className="p-4 bg-card mt-auto border-t">
+              <div className="grid grid-cols-2 gap-3">
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline" className="w-full">
@@ -82,11 +85,14 @@ export default function FeaturedProjects() {
                       Demo
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[800px] p-0 overflow-hidden">
-                    <DialogHeader className="p-4 bg-muted/20">
-                      <DialogTitle>{project.title} - Demo</DialogTitle>
+
+                  <DialogContent className="sm:max-w-[800px] p-0 overflow-hidden bg-black border-none">
+                    <DialogHeader className="p-4 absolute top-0 z-20 w-full bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
+                      <DialogTitle className="text-white">
+                        {project.title}
+                      </DialogTitle>
                     </DialogHeader>
-                    {/* Iframe Youtube */}
+
                     <div className="aspect-video w-full">
                       <iframe
                         className="w-full h-full"
@@ -99,7 +105,6 @@ export default function FeaturedProjects() {
                   </DialogContent>
                 </Dialog>
 
-                {/* 2. BUTTON VIEW DETAIL (LINK) */}
                 <Button asChild className="w-full">
                   <Link href={`/projects/${project.id}`}>
                     Detail
@@ -107,7 +112,7 @@ export default function FeaturedProjects() {
                   </Link>
                 </Button>
               </div>
-            </CardFooter>
+            </div>
           </Card>
         ))}
       </div>

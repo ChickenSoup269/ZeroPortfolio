@@ -19,7 +19,10 @@ export default function Home() {
       <section className="relative bg-gradient-to-r from-primary to-secondary text-white py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <Avatar className="mx-auto h-24 w-24 mb-4">
-            <AvatarImage src="https://github.com/shadcn.png" alt="Your Photo" />
+            <AvatarImage
+              src="https://avatars.githubusercontent.com/u/95624468?v=4"
+              alt="Your Photo"
+            />
             <AvatarFallback>YOU</AvatarFallback>
           </Avatar>
           <h1 className="text-4xl md:text-6xl font-bold mb-4 animate-fade-in">
