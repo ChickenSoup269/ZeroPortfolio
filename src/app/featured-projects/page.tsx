@@ -1,7 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { Card, CardFooter } from "@/components/ui/card"
+import Image from "next/image"
+import { motion } from "framer-motion"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -10,8 +12,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Youtube, ArrowRight } from "lucide-react"
+import { Youtube, ArrowRight, Play } from "lucide-react"
 
+// --- Dữ liệu ---
 const projects = [
   {
     id: "bookmark-manager",
@@ -40,82 +43,122 @@ const projects = [
   },
 ]
 
+// --- Animation Variants ---
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2 },
+  },
+}
+
+const cardVariants = {
+  hidden: { y: 30, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
+}
+
 export default function FeaturedProjects() {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8 text-center">Featured Projects</h1>
+    <div className="max-w-7xl mx-auto px-4 py-16">
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-4xl font-bold mb-12 text-center"
+      >
+        Featured Projects
+      </motion.h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
         {projects.map((project) => (
-          <Card
-            key={project.id}
-            // SỬA ĐỔI QUAN TRỌNG:
-            // 1. p-0: Xóa padding mặc định để ảnh tràn viền
-            // 2. overflow-hidden: Cắt ảnh thừa ở các góc bo tròn
-            // 3. h-auto: Chiều cao tự động co giãn theo nội dung (xóa khoảng trắng thừa)
-            className="group relative flex flex-col p-0 overflow-hidden rounded-xl border shadow-md hover:shadow-xl transition-all duration-300 h-auto"
-          >
-            {/* PHẦN ẢNH */}
-            <div className="relative w-full aspect-video overflow-hidden">
-              <img
-                src={project.imageUrl}
-                alt={project.title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-
-              {/* Lớp phủ Overlay */}
-              <div className="absolute inset-0 bg-black/70 flex flex-col justify-center items-center p-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <h3 className="text-white font-bold text-xl mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  {project.title}
-                </h3>
-                <p className="text-gray-200 text-sm translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75 line-clamp-3">
-                  {project.description}
-                </p>
+          <motion.div key={project.id} variants={cardVariants}>
+            {/* 
+               Thiết lập chiều cao cố định (h-[400px]) để ảnh luôn đẹp 
+               group: để kích hoạt hiệu ứng hover
+            */}
+            <Card className="group relative h-[200px] w-full overflow-hidden rounded-sm border-none shadow-lg bg-black">
+              {/* 1. LỚP ẢNH NỀN (FULL CARD) */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={project.imageUrl}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:opacity-60"
+                />
               </div>
-            </div>
 
-            {/* PHẦN FOOTER */}
-            {/* mt-auto để đẩy footer xuống đáy nếu các card có chiều cao khác nhau */}
-            <div className="p-4 bg-card mt-auto border-t">
-              <div className="grid grid-cols-2 gap-3">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full">
-                      <Youtube className="mr-2 h-4 w-4 text-red-600" />
-                      Demo
-                    </Button>
-                  </DialogTrigger>
+              {/* 2. LỚP PHỦ GRADIENT & NỘI DUNG (Hiện ra khi Hover) */}
+              {/* 
+                  translate-y-full: Mặc định đẩy nội dung xuống dưới đáy (ẩn đi)
+                  group-hover:translate-y-0: Khi hover thì trượt lên vị trí cũ
+              */}
+              <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 bg-linear-to-t  from-black/70 via-black/60 to-transparent opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
+                {/* Text Info */}
+                <div className="mb-4">
+                  <h3 className="text-white text-lg font-bold mb-2 drop-shadow-md transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                    {project.title}
+                  </h3>
+                  <p className="text-gray-300 text-xs line-clamp-3 mb-4 drop-shadow-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                    {project.description}
+                  </p>
+                </div>
 
-                  <DialogContent className="sm:max-w-[800px] p-0 overflow-hidden bg-black border-none">
-                    <DialogHeader className="p-4 absolute top-0 z-20 w-full bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
-                      <DialogTitle className="text-white">
-                        {project.title}
-                      </DialogTitle>
-                    </DialogHeader>
+                {/* Action Buttons */}
+                <div className="grid grid-cols-2 gap-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
+                  {/* Button Demo */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button className="w-full bg-white text-black hover:bg-gray-200 border-none">
+                        <Play className="mr-2 h-4 w-4 fill-current" /> Demo
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[900px] p-0 overflow-hidden bg-black border-none">
+                      <DialogHeader className="p-4 absolute top-0 z-20 w-full bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
+                        <DialogTitle className="text-white">
+                          {project.title}
+                        </DialogTitle>
+                      </DialogHeader>
+                      <div className="aspect-video w-full">
+                        <iframe
+                          className="w-full h-full"
+                          src={`https://www.youtube.com/embed/${project.videoId}?autoplay=1`}
+                          title="YouTube video player"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
 
-                    <div className="aspect-video w-full">
-                      <iframe
-                        className="w-full h-full"
-                        src={`https://www.youtube.com/embed/${project.videoId}?autoplay=1`}
-                        title="YouTube video player"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-
-                <Button asChild className="w-full">
-                  <Link href={`/projects/${project.id}`}>
-                    Detail
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                  {/* Button Detail */}
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full border-white text-white bg-transparent hover:bg-white/20 hover:text-white"
+                  >
+                    <Link href={`/projects/${project.id}`}>
+                      Detail <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Card>
+
+              {/* Optional: Icon gợi ý user hover vào (ẩn đi khi hover) */}
+              <div className="absolute bottom-4 right-4 z-20 group-hover:opacity-0 transition-opacity duration-300">
+                <div className="bg-black/50 backdrop-blur-sm p-2 rounded-full text-white/80">
+                  <ArrowRight className="w-5 h-5 -rotate-45" />
+                </div>
+              </div>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   )
 }
