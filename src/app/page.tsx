@@ -21,12 +21,13 @@ import {
   Linkedin,
   Mail,
 } from "lucide-react"
-
+import Image from "next/image"
+import aboutImage from "./image/about.png"
 // Import Context
 import { useLanguage } from "@/app/LanguageContext"
-
+import { projectsData } from "@/lib/projectsData"
 // IMPORT ICONS
-import { FaReact, FaNodeJs, FaDocker, FaJava, FaGitAlt } from "react-icons/fa"
+import { FaReact, FaNodeJs, FaDocker, FaGitAlt } from "react-icons/fa"
 import {
   SiNextdotjs,
   SiTypescript,
@@ -35,6 +36,9 @@ import {
   SiPostgresql,
   SiMongodb,
   SiSpring,
+  SiJavascript,
+  SiHtml5,
+  SiCss3,
 } from "react-icons/si"
 
 // Variants Animation
@@ -60,36 +64,18 @@ export default function Home() {
     { name: "React", icon: FaReact, color: "text-blue-500" },
     { name: "TypeScript", icon: SiTypescript, color: "text-blue-600" },
     { name: "Node.js", icon: FaNodeJs, color: "text-green-600" },
-    { name: "Java", icon: FaJava, color: "text-red-500" },
-    { name: "Spring", icon: SiSpring, color: "text-green-500" },
+    { name: "JavaScript", icon: SiJavascript, color: "text-yellow-400" },
+    { name: "HTML", icon: SiHtml5, color: "text-orange-600" },
+    { name: "CSS", icon: SiCss3, color: "text-blue-600" },
     { name: "Tailwind", icon: SiTailwindcss, color: "text-cyan-500" },
-    { name: "Prisma", icon: SiPrisma, color: "text-teal-600" },
     { name: "PostgreSQL", icon: SiPostgresql, color: "text-blue-400" },
     { name: "MongoDB", icon: SiMongodb, color: "text-green-500" },
     { name: "Docker", icon: FaDocker, color: "text-blue-500" },
     { name: "Git", icon: FaGitAlt, color: "text-orange-600" },
+    { name: "GitHub", icon: Github, color: "text-gray-800 dark:text-white" },
   ]
 
-  const previewProjects = [
-    {
-      title: "E-Commerce Platform",
-      desc: t("projEcommerce"), // Dùng t()
-      icon: <Code className="h-6 w-6 text-blue-500" />,
-      tags: ["Next.js", "Stripe", "Prisma"],
-    },
-    {
-      title: "Task Management",
-      desc: t("projTask"), // Dùng t()
-      icon: <Terminal className="h-6 w-6 text-green-500" />,
-      tags: ["React", "dnd-kit", "Socket.io"],
-    },
-    {
-      title: "AI Chat Assistant",
-      desc: t("projChat"), // Dùng t()
-      icon: <Cpu className="h-6 w-6 text-purple-500" />,
-      tags: ["OpenAI", "Tailwind", "Vercel SDK"],
-    },
-  ]
+  const featuredProjects = projectsData.filter((p) => p.featured)
 
   return (
     <div className="overflow-hidden bg-background min-h-screen">
@@ -125,7 +111,7 @@ export default function Home() {
             className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6"
           >
             {t("hiIm")}{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-purple-500 to-blue-500 animate-gradient">
               ChickenSoup
             </span>
           </motion.h1>
@@ -249,9 +235,11 @@ export default function Home() {
           variants={fadeIn}
         >
           <div className="relative rounded-2xl overflow-hidden shadow-2xl border bg-muted group">
-            <img
-              src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop"
-              alt="Coding Workspace"
+            <Image
+              src={aboutImage}
+              alt="About Section Image"
+              width={1920}
+              height={1080}
               className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
             />
           </div>
@@ -319,29 +307,25 @@ export default function Home() {
             viewport={{ once: true }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {previewProjects.map((proj, idx) => (
+            {featuredProjects.map((proj, idx) => (
               <motion.div key={idx} variants={itemVariants}>
                 <Card className="h-full flex flex-col hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border-t-4 border-t-primary/50">
                   <CardHeader>
-                    <div className="mb-4 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                      {proj.icon}
-                    </div>
-                    <CardTitle className="text-xl">{proj.title}</CardTitle>
+                    <CardTitle className="text-xl">{t(proj.title)}</CardTitle>
                     <CardDescription className="line-clamp-2 mt-2">
-                      {proj.desc}
+                      {t(proj.description)}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="flex-grow">
                     <div className="flex flex-wrap gap-2">
-                      {proj.tags &&
-                        proj.tags.map((tag, i) => (
-                          <span
-                            key={i}
-                            className="text-xs font-medium px-2 py-1 rounded-md bg-secondary text-secondary-foreground"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                      {proj.techStack.slice(0, 4).map((tag, i) => (
+                        <span
+                          key={i}
+                          className="text-xs font-medium px-2 py-1 rounded-md bg-secondary text-secondary-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </CardContent>
                   <CardFooter>
@@ -350,7 +334,7 @@ export default function Home() {
                       className="w-full group justify-between"
                       asChild
                     >
-                      <Link href="/featured-projects">
+                      <Link href={`/projects/${proj.slug}`}>
                         {t("details")}
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </Link>

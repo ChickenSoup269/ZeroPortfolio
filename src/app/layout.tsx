@@ -9,7 +9,7 @@ import Footer from "@/components/footer"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "My Portfolio",
+  title: "Zero Portfolio",
   description: "A beautiful portfolio built with Next.js and shadcn/ui",
 }
 

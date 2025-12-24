@@ -48,18 +48,86 @@ const translations = {
     repositories: "Repositories",
     yearsExp: "Years Experience",
 
-    // Featured Projects
+    // Featured Projects Page
     featuredTitle: "Featured Projects",
     featuredSubtitle:
       "Some highlighted projects I've worked on (Check my GitHub for more!).",
     viewGithub: "View GitHub",
     details: "Details",
 
-    // Project Descriptions (Example)
-    projEcommerce:
-      "Full-stack online shopping platform with integrated payments.",
-    projTask: "Realtime team task management app with drag-and-drop (Kanban).",
-    projChat: "Smart chatbot using OpenAI API for automated support.",
+    // Other Projects Page
+    otherProjectsTitle: "Other Noteworthy Projects",
+    otherProjectsDesc:
+      "Open source projects, experiments, and other cool stuff.",
+    paginationPrevious: "Previous",
+    paginationPage: "Page",
+    paginationOf: "of",
+    paginationNext: "Next",
+    allProjectsTitle: "All Projects",
+    allProjectsDesc:
+      "A collection of projects I've built, from web apps to browser extensions.",
+
+    // Project Details Page UI
+    backToProjects: "Back to Projects",
+    liveDemo: "Live Demo",
+    sourceCode: "Source Code",
+    overview: "Overview",
+    videoDemo: "Video Demo",
+    gallery: "Gallery",
+    keyFeatures: "Key Features",
+    projectDetails: "Project Details",
+    detailYear: "Year",
+    detailType: "Type",
+    detailRole: "Role",
+    detailStatus: "Status",
+    statusActive: "Active / Maintaining",
+    statusCompleted: "Completed",
+    metaBookmarkManagerType: "Browser Extension",
+    metaBookmarkManagerRole: "Solo Developer",
+    metaZeroMovieType: "University Capstone",
+    metaZeroMovieRole: "Frontend Lead",
+    metaSteamCloneType: "UI Clone / Practice",
+    metaSteamCloneRole: "Frontend Developer",
+    metaDefaultType: "Personal Project",
+    metaDefaultRole: "Fullstack Developer",
+
+    // Project Specific Content
+    projBookmarkManagerTitle: "Zero Bookmark Manager",
+    projBookmarkManagerDesc:
+      "An intelligent bookmark management extension to replace the default manager.",
+    projBookmarkManagerContent:
+      "A browser extension that helps users manage thousands of bookmarks efficiently. The project focuses on user experience with a beautiful interface, ultra-fast search speed, and high customizability.",
+    projBookmarkManagerFeature1: "Fuzzy Search (finds results even with typos)",
+    projBookmarkManagerFeature2: "Drag & Drop to organize folders",
+    projBookmarkManagerFeature3: "Automatic Dark/Light Mode",
+    projBookmarkManagerFeature4: "Real-time data synchronization",
+    projBookmarkManagerFeature5: "Secure JSON data Import/Export",
+
+    projZeroMovieTitle: "Zero Movie Theater",
+    projZeroMovieDesc: "A comprehensive online movie ticket booking system (MERN Stack).",
+    projZeroMovieContent:
+      "A graduation project that completely simulates the operational flow of a movie theater. It includes a Client Side for customers to book tickets and an Admin Dashboard to manage films, showtimes, and revenue.",
+    projZeroMovieFeature1: "Real-time seat booking and holding (Socket.io)",
+    projZeroMovieFeature2: "Integrated payments (PayPal Sandbox)",
+    projZeroMovieFeature3: "Send e-tickets via Email (Nodemailer)",
+    projZeroMovieFeature4: "Admin Dashboard: Manage Movies, Showtimes, Users",
+    projZeroMovieFeature5: "Revenue statistics with charts",
+
+    projSteamCloneTitle: "SteamClone",
+    projSteamCloneDesc:
+      "A clone of the Steam platform's interface and functionality.",
+    projSteamCloneContent:
+      "An e-commerce website specializing in games, recreating the complex UI/UX of Steam. The system allows users to view game details, add to cart, and manage their personal game library.",
+    projSteamCloneFeature1: "Authentication (Login/Register)",
+    projSteamCloneFeature2: "Shopping Cart & Wishlist",
+    projSteamCloneFeature3: "Search and filter games by genre",
+    projSteamCloneFeature4: "Responsive design for mobile compatibility",
+    projSteamCloneFeature5: "Comment and rate games",
+
+    // Footer
+    footerRights: "© 2025 Trần Phước Thiện. All Rights Reserved.",
+    copied: "Copied!",
+    builtWith: "Built with",
   },
   vi: {
     // Navbar
@@ -104,11 +172,78 @@ const translations = {
     viewGithub: "Xem GitHub",
     details: "Chi Tiết",
 
-    // Project Descriptions
-    projEcommerce:
-      "Nền tảng mua sắm trực tuyến full-stack với thanh toán tích hợp.",
-    projTask: "Ứng dụng quản lý công việc nhóm realtime, kéo thả (Kanban).",
-    projChat: "Chatbot thông minh sử dụng OpenAI API hỗ trợ trả lời tự động.",
+    // Other Projects Page
+    otherProjectsTitle: "Các Dự Án Đáng Chú Ý Khác",
+    otherProjectsDesc:
+      "Các dự án mã nguồn mở, experiments và những thứ thú vị khác.",
+    paginationPrevious: "Trang Trước",
+    paginationPage: "Trang",
+    paginationOf: "trên",
+    paginationNext: "Trang Kế",
+    allProjectsTitle: "Tất Cả Dự Án",
+    allProjectsDesc:
+      "Tuyển tập các dự án tôi đã xây dựng, từ ứng dụng web đến tiện ích mở rộng trình duyệt.",
+
+    // Project Details Page UI
+    backToProjects: "Quay lại trang dự án",
+    liveDemo: "Bản Demo",
+    sourceCode: "Mã Nguồn",
+    overview: "Tổng Quan",
+    videoDemo: "Video Demo",
+    gallery: "Thư Viện",
+    keyFeatures: "Tính Năng Chính",
+    projectDetails: "Chi Tiết Dự Án",
+    detailYear: "Năm",
+    detailType: "Loại",
+    detailRole: "Vai Trò",
+    detailStatus: "Trạng Thái",
+    statusActive: "Đang hoạt động / Bảo trì",
+    statusCompleted: "Đã hoàn thành",
+    metaBookmarkManagerType: "Tiện ích mở rộng",
+    metaBookmarkManagerRole: "Solo Developer",
+    metaZeroMovieType: "Đồ án tốt nghiệp",
+    metaZeroMovieRole: "Frontend Lead",
+    metaSteamCloneType: "UI Clone / Luyện tập",
+    metaSteamCloneRole: "Frontend Developer",
+    metaDefaultType: "Dự án cá nhân",
+    metaDefaultRole: "Fullstack Developer",
+
+    // Project Specific Content
+    projBookmarkManagerTitle: "Zero Bookmark Manager",
+    projBookmarkManagerDesc:
+      "Extension quản lý bookmark thông minh thay thế trình quản lý mặc định.",
+    projBookmarkManagerContent:
+      "Một tiện ích mở rộng (Extension) giúp người dùng quản lý hàng nghìn bookmark một cách hiệu quả. Dự án tập trung vào trải nghiệm người dùng với giao diện đẹp mắt, tốc độ tìm kiếm cực nhanh và khả năng tùy biến cao.",
+    projBookmarkManagerFeature1: "Tìm kiếm Fuzzy Search (gõ sai vẫn ra kết quả)",
+    projBookmarkManagerFeature2: "Kéo thả (Drag & Drop) để sắp xếp thư mục",
+    projBookmarkManagerFeature3: "Chế độ Dark/Light Mode tự động",
+    projBookmarkManagerFeature4: "Đồng bộ dữ liệu thời gian thực",
+    projBookmarkManagerFeature5: "Import/Export dữ liệu JSON an toàn",
+
+    projZeroMovieTitle: "Zero Movie Theater",
+    projZeroMovieDesc: "Hệ thống đặt vé xem phim trực tuyến toàn diện (MERN Stack).",
+    projZeroMovieContent:
+      "Dự án tốt nghiệp mô phỏng hoàn chỉnh quy trình hoạt động của rạp chiếu phim. Bao gồm Client Side cho khách hàng đặt vé và Admin Dashboard để quản lý phim, suất chiếu và doanh thu.",
+    projZeroMovieFeature1: "Đặt vé và giữ ghế Realtime (Socket.io)",
+    projZeroMovieFeature2: "Thanh toán tích hợp (PayPal Sandbox)",
+    projZeroMovieFeature3: "Gửi vé điện tử qua Email (Nodemailer)",
+    projZeroMovieFeature4: "Admin Dashboard: Quản lý Phim, Lịch chiếu, User",
+    projZeroMovieFeature5: "Thống kê doanh thu bằng biểu đồ",
+
+    projSteamCloneTitle: "SteamClone",
+    projSteamCloneDesc: "Bản sao giao diện và chức năng của nền tảng Steam.",
+    projSteamCloneContent:
+      "Website thương mại điện tử chuyên về game, tái hiện lại giao diện người dùng (UI/UX) phức tạp của Steam. Hệ thống cho phép xem chi tiết game, thêm vào giỏ hàng và quản lý thư viện game cá nhân.",
+    projSteamCloneFeature1: "Authentication (Đăng nhập/Đăng ký)",
+    projSteamCloneFeature2: "Giỏ hàng & Wishlist",
+    projSteamCloneFeature3: "Tìm kiếm và lọc game theo thể loại",
+    projSteamCloneFeature4: "Giao diện Responsive tương thích Mobile",
+    projSteamCloneFeature5: "Bình luận và đánh giá game",
+
+    // Footer
+    footerRights: "© 2025 Trần Phước Thiện. Mọi quyền được bảo lưu.",
+    copied: "Đã sao chép!",
+    builtWith: "Xây dựng với",
   },
 }
 

@@ -1,5 +1,6 @@
 "use client"
 
+import { useLanguage } from "@/app/LanguageContext"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
@@ -12,153 +13,120 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Youtube, ArrowRight, Play } from "lucide-react"
-
-// --- Dữ liệu ---
-const projects = [
-  {
-    id: "bookmark-manager",
-    title: "Zero Bookmark Manager",
-    description: "Extension quản lý bookmark nhanh chóng và tiện lợi.",
-    videoId: "3mcsG_p_j7s",
-    imageUrl:
-      "https://github.com/ChickenSoup269/imagesForRepo/raw/main/img_repo_extension_bookmarks/about_bookmark/1.png?raw=true",
-  },
-  {
-    id: "zero-movie",
-    title: "Zero Movie Theater",
-    description:
-      "Nền tảng rạp chiếu phim thông minh với trải nghiệm đặt vé siêu tốc.",
-    videoId: "Hv5FI1u5by8",
-    imageUrl:
-      "https://github.com/ChickenSoup269/Zero_Movie/raw/main/frontend/public/screenshots/trangchinh.png",
-  },
-  {
-    id: "steam-clone",
-    title: "SteamClone",
-    description: "Website mua game trực tuyến giao diện giống Steam.",
-    videoId: "zZd_RgvPfic",
-    imageUrl:
-      "https://github.com/ChickenSoup269/SteamClone/raw/master/Screenshot/Screenshot%202024-07-25%20203434.png",
-  },
-]
+import { Youtube, ArrowRight, Play, Eye } from "lucide-react"
+import { projectsData } from "@/lib/projectsData" // Sử dụng dữ liệu tập trung
 
 // --- Animation Variants ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.2 },
+    transition: { staggerChildren: 0.15, delayChildren: 0.2 },
   },
 }
 
 const cardVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
+  hidden: { y: 50, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 100, damping: 15 },
+  },
 }
 
 export default function FeaturedProjects() {
+  const { t } = useLanguage()
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16">
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-4xl font-bold mb-12 text-center"
-      >
-        Featured Projects
-      </motion.h1>
+    <div className="relative min-h-screen w-full bg-background overflow-hidden">
+      {/* Lớp nền lưới */}
+      <div className="absolute inset-0 z-0 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      <div className="absolute -bottom-1/3 left-0 -z-10 m-auto h-[400px] w-[400px] rounded-full bg-primary/20 opacity-20 blur-[120px]"></div>
+      <div className="absolute -top-1/4 right-0 -z-10 m-auto h-[500px] w-[500px] rounded-full bg-purple-500/10 opacity-20 blur-[100px]"></div>
 
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
-        {projects.map((project) => (
-          <motion.div key={project.id} variants={cardVariants}>
-            {/* 
-               Thiết lập chiều cao cố định (h-[400px]) để ảnh luôn đẹp 
-               group: để kích hoạt hiệu ứng hover
-            */}
-            <Card className="group relative h-[200px] w-full overflow-hidden rounded-sm border-none shadow-lg bg-black">
-              {/* 1. LỚP ẢNH NỀN (FULL CARD) */}
-              <div className="absolute inset-0 z-0">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 sm:py-24">
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
+            {t("allProjectsTitle")}
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            {t("allProjectsDesc")}
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {projectsData.map((project) => (
+            <motion.div key={project.slug} variants={cardVariants}>
+              <Card className="group relative h-80 w-full overflow-hidden rounded-xl border-2 border-transparent hover:border-primary/50 shadow-lg transition-all duration-300">
+                {/* Lớp ảnh nền */}
                 <Image
                   src={project.imageUrl}
                   alt={project.title}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:opacity-60"
+                  className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
                 />
-              </div>
 
-              {/* 2. LỚP PHỦ GRADIENT & NỘI DUNG (Hiện ra khi Hover) */}
-              {/* 
-                  translate-y-full: Mặc định đẩy nội dung xuống dưới đáy (ẩn đi)
-                  group-hover:translate-y-0: Khi hover thì trượt lên vị trí cũ
-              */}
-              <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 bg-linear-to-t  from-black/70 via-black/60 to-transparent opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
-                {/* Text Info */}
-                <div className="mb-4">
-                  <h3 className="text-white text-lg font-bold mb-2 drop-shadow-md transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                    {project.title}
+                {/* Lớp phủ Gradient cố định ở dưới */}
+                <div className="absolute bottom-0 inset-x-0 h-2/3 bg-gradient-to-t from-black/80 via-black/50 to-transparent"></div>
+
+                {/* Nội dung Text cố định */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                  <h3 className="text-2xl font-bold mb-2 drop-shadow-lg">
+                    {t(project.title)}
                   </h3>
-                  <p className="text-gray-300 text-xs line-clamp-3 mb-4 drop-shadow-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
-                    {project.description}
+                  <p className="text-sm text-gray-300 line-clamp-2 drop-shadow">
+                    {t(project.description)}
                   </p>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="grid grid-cols-2 gap-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
-                  {/* Button Demo */}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="w-full bg-white text-black hover:bg-gray-200 border-none">
-                        <Play className="mr-2 h-4 w-4 fill-current" /> Demo
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[900px] p-0 overflow-hidden bg-black border-none">
-                      <DialogHeader className="p-4 absolute top-0 z-20 w-full bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
-                        <DialogTitle className="text-white">
-                          {project.title}
-                        </DialogTitle>
-                      </DialogHeader>
-                      <div className="aspect-video w-full">
-                        <iframe
-                          className="w-full h-full"
-                          src={`https://www.youtube.com/embed/${project.videoId}?autoplay=1`}
-                          title="YouTube video player"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        ></iframe>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                                {/* Nút và thông tin hiện ra khi hover */}
 
-                  {/* Button Detail */}
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full border-white text-white bg-transparent hover:bg-white/20 hover:text-white"
-                  >
-                    <Link href={`/projects/${project.id}`}>
-                      Detail <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
+                                <div className="absolute inset-0 z-10 flex flex-col justify-center items-center p-6 bg-black/70 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 ease-in-out">
 
-              {/* Optional: Icon gợi ý user hover vào (ẩn đi khi hover) */}
-              <div className="absolute bottom-4 right-4 z-20 group-hover:opacity-0 transition-opacity duration-300">
-                <div className="bg-black/50 backdrop-blur-sm p-2 rounded-full text-white/80">
-                  <ArrowRight className="w-5 h-5 -rotate-45" />
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-        ))}
-      </motion.div>
+                                  <div className="text-center">
+
+                                    <h3 className="text-2xl font-bold text-white mb-6">
+
+                                      {t(project.title)}
+
+                                    </h3>
+
+                                    <Button
+
+                                      variant="outline"
+
+                                      className="w-40 text-lg px-6 py-3 border-2 border-white text-white bg-white/10 hover:bg-white hover:text-black hover:border-white transition-all duration-300"
+
+                                      asChild
+
+                                    >
+
+                                      <Link href={`/projects/${project.slug}`}>
+
+                                        {t("details")}
+
+                                      </Link>
+
+                                    </Button>
+
+                                  </div>
+
+                                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
     </div>
   )
 }

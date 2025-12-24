@@ -1,5 +1,6 @@
 "use client"
 
+import { useLanguage } from "@/app/LanguageContext"
 import { useState } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
@@ -24,47 +25,47 @@ import {
 import Image from "next/image"
 
 // Helper để lấy thông tin chi tiết dựa trên tên dự án
-// (Giúp bạn không cần sửa database/file data gốc mà vẫn có thông tin hiển thị đúng)
-const getProjectMeta = (title: string) => {
-  if (title.includes("Bookmark")) {
+const getProjectMeta = (titleKey: string, t: (key: string) => string) => {
+  if (titleKey.includes("Bookmark")) {
     return {
       year: "2025",
-      type: "Browser Extension",
-      role: "Solo Developer",
-      status: "Active / Maintaining",
+      type: t("metaBookmarkManagerType"),
+      role: t("metaBookmarkManagerRole"),
+      status: t("statusActive"),
     }
   }
-  if (title.includes("Movie")) {
+  if (titleKey.includes("Movie")) {
     return {
       year: "2025",
-      type: "University Capstone", // Đồ án tốt nghiệp
-      role: "Frontend Lead",
-      status: "Completed",
+      type: t("metaZeroMovieType"),
+      role: t("metaZeroMovieRole"),
+      status: t("statusCompleted"),
     }
   }
-  if (title.includes("Steam")) {
+  if (titleKey.includes("Steam")) {
     return {
       year: "2024",
-      type: "UI Clone / Practice",
-      role: "Frontend Developer",
-      status: "Completed",
+      type: t("metaSteamCloneType"),
+      role: t("metaSteamCloneRole"),
+      status: t("statusCompleted"),
     }
   }
   // Mặc định
   return {
     year: "2024",
-    type: "Personal Project",
-    role: "Fullstack Developer",
-    status: "Completed",
+    type: t("metaDefaultType"),
+    role: t("metaDefaultRole"),
+    status: t("statusCompleted"),
   }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ProjectClientUI({ project }: { project: any }) {
+  const { t } = useLanguage()
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   // Lấy thông tin meta tự động
-  const meta = getProjectMeta(project.title)
+  const meta = getProjectMeta(project.title, t)
 
   // Animation Variants
   const containerVariants = {
@@ -97,7 +98,7 @@ export default function ProjectClientUI({ project }: { project: any }) {
             className="mb-8 pl-0 hover:pl-2 transition-all text-muted-foreground hover:text-foreground"
           >
             <Link href="/featured-projects">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Projects
+              <ArrowLeft className="mr-2 h-4 w-4" /> {t("backToProjects")}
             </Link>
           </Button>
         </motion.div>
@@ -116,7 +117,7 @@ export default function ProjectClientUI({ project }: { project: any }) {
           >
             <Image
               src={project.imageUrl}
-              alt={project.title}
+              alt={t(project.title)}
               width={800}
               height={500}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -132,16 +133,16 @@ export default function ProjectClientUI({ project }: { project: any }) {
           >
             <div>
               <h1 className="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">
-                {project.title}
+                {t(project.title)}
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                {project.description}
+                {t(project.description)}
               </p>
             </div>
 
             <div>
               <h3 className="font-bold text-xs text-foreground/60 uppercase tracking-widest mb-3">
-                Tech Stack
+                {t("techStack")}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech: string) => (
@@ -160,14 +161,14 @@ export default function ProjectClientUI({ project }: { project: any }) {
               {project.liveUrl && (
                 <Button className="flex-1 shadow-lg shadow-primary/20" asChild>
                   <Link href={project.liveUrl} target="_blank">
-                    <Globe className="mr-2 h-4 w-4" /> Live Demo
+                    <Globe className="mr-2 h-4 w-4" /> {t("liveDemo")}
                   </Link>
                 </Button>
               )}
               {project.githubUrl && (
                 <Button variant="outline" className="flex-1" asChild>
                   <Link href={project.githubUrl} target="_blank">
-                    <Github className="mr-2 h-4 w-4" /> Source Code
+                    <Github className="mr-2 h-4 w-4" /> {t("sourceCode")}
                   </Link>
                 </Button>
               )}
@@ -192,10 +193,10 @@ export default function ProjectClientUI({ project }: { project: any }) {
               viewport={{ once: true }}
             >
               <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                Overview
+                {t("overview")}
               </h2>
               <div className="prose dark:prose-invert max-w-none text-muted-foreground text-lg leading-8 text-justify">
-                {project.content}
+                {t(project.content)}
               </div>
             </motion.section>
 
@@ -207,7 +208,7 @@ export default function ProjectClientUI({ project }: { project: any }) {
                 viewport={{ once: true }}
               >
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <Youtube className="h-6 w-6 text-red-600" /> Video Demo
+                  <Youtube className="h-6 w-6 text-red-600" /> {t("videoDemo")}
                 </h2>
                 <div className="rounded-2xl overflow-hidden border shadow-lg aspect-video bg-black">
                   <iframe
@@ -230,7 +231,7 @@ export default function ProjectClientUI({ project }: { project: any }) {
                 className="relative"
               >
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <ImageIcon className="h-6 w-6 text-blue-500" /> Gallery
+                  <ImageIcon className="h-6 w-6 text-blue-500" /> {t("gallery")}
                 </h2>
 
                 <div className="relative group/gallery w-full">
@@ -302,16 +303,16 @@ export default function ProjectClientUI({ project }: { project: any }) {
             {/* Features Card */}
             <div className="p-6 rounded-2xl border bg-card/50 backdrop-blur-sm shadow-sm sticky top-24">
               <h3 className="font-bold text-xl mb-6 flex items-center gap-2 border-b pb-4">
-                Key Features
+                {t("keyFeatures")}
               </h3>
               <ul className="space-y-4">
-                {project.features.map((feature: string, idx: number) => (
+                {project.features.map((featureKey: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-3 group">
                     <div className="mt-1 p-1 rounded-full bg-green-100 dark:bg-green-900/30 shrink-0">
                       <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </div>
                     <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                      {feature}
+                      {t(featureKey)}
                     </span>
                   </li>
                 ))}
@@ -320,36 +321,36 @@ export default function ProjectClientUI({ project }: { project: any }) {
 
             {/* Project Details Card - ĐÃ CẬP NHẬT */}
             <div className="p-6 rounded-2xl border bg-muted/20">
-              <h3 className="font-bold text-lg mb-4">Project Details</h3>
+              <h3 className="font-bold text-lg mb-4">{t("projectDetails")}</h3>
               <div className="space-y-4 text-sm">
                 <div className="flex justify-between items-center py-2 border-b border-border/50">
                   <span className="text-muted-foreground flex items-center gap-2">
-                    <Calendar className="w-4 h-4" /> Year
+                    <Calendar className="w-4 h-4" /> {t("detailYear")}
                   </span>
                   <span className="font-medium">{meta.year}</span>
                 </div>
 
                 <div className="flex justify-between items-center py-2 border-b border-border/50">
                   <span className="text-muted-foreground flex items-center gap-2">
-                    <Tag className="w-4 h-4" /> Type
+                    <Tag className="w-4 h-4" /> {t("detailType")}
                   </span>
                   <span className="font-medium text-right">{meta.type}</span>
                 </div>
 
                 <div className="flex justify-between items-center py-2 border-b border-border/50">
                   <span className="text-muted-foreground flex items-center gap-2">
-                    <User className="w-4 h-4" /> Role
+                    <User className="w-4 h-4" /> {t("detailRole")}
                   </span>
                   <span className="font-medium">{meta.role}</span>
                 </div>
 
                 <div className="flex justify-between items-center py-2">
                   <span className="text-muted-foreground flex items-center gap-2">
-                    <Activity className="w-4 h-4" /> Status
+                    <Activity className="w-4 h-4" /> {t("detailStatus")}
                   </span>
                   <Badge
                     variant={
-                      meta.status === "Completed" ? "default" : "secondary"
+                      meta.status === t("statusCompleted") ? "default" : "secondary"
                     }
                   >
                     {meta.status}

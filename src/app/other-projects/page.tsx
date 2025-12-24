@@ -1,5 +1,6 @@
 "use client"
 
+import { useLanguage } from "@/app/LanguageContext"
 import { useState } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
@@ -21,20 +22,64 @@ import {
   ExternalLink,
 } from "lucide-react"
 
-// 1. DỮ LIỆU GIẢ LẬP (Tạo 15 dự án để test phân trang)
-const allProjects = Array.from({ length: 20 }).map((_, i) => ({
-  id: `project-${i + 1}`,
-  title: `Experimental Project ${i + 1}`,
-  description:
-    "Một dự án nhỏ để thử nghiệm công nghệ mới, library hoặc thuật toán thú vị.",
-  techStack: ["TypeScript", "React", i % 2 === 0 ? "Tailwind" : "SCSS"],
-  githubUrl: "#",
-  hasDetail: true, // Giả sử dự án nào cũng có trang chi tiết
-}))
+// 1. DỮ LIỆU THẬT TỪ GITHUB REPOS
+const allProjects = [
+  {
+    id: "React-Food-KFC",
+    title: "React Food - KFC Clone",
+    description:
+      "Một ứng dụng web đặt đồ ăn, lấy cảm hứng từ giao diện của KFC, được xây dựng bằng React.",
+    techStack: ["React", "JavaScript", "CSS", "Firebase"],
+    githubUrl: "https://github.com/ChickenSoup269/React-Food-KFC",
+    liveUrl: "https://react-food-kfc.web.app/",
+    hasDetail: false,
+  },
+  {
+    id: "Python-spending-note",
+    title: "Python Spending Note",
+    description:
+      "Một công cụ dòng lệnh đơn giản để theo dõi chi tiêu cá nhân, được viết bằng Python.",
+    techStack: ["Python"],
+    githubUrl: "https://github.com/ChickenSoup269/Python-spending-note",
+    liveUrl: null,
+    hasDetail: false,
+  },
+  {
+    id: "Spotify_Clone",
+    title: "Spotify Clone",
+    description:
+      "Bản sao giao diện web của Spotify, cho phép người dùng duyệt và phát nhạc (sử dụng API của Spotify).",
+    techStack: ["React", "JavaScript", "Spotify API", "Node.js"],
+    githubUrl: "https://github.com/ChickenSoup269/Spotify_Clone",
+    liveUrl: null,
+    hasDetail: false,
+  },
+  {
+    id: "ProjectAndroid1",
+    title: "Simple Android Project",
+    description:
+      "Một dự án Android cơ bản để giới thiệu về lập trình di động, thể hiện các tính năng cốt lõi.",
+    techStack: ["Java", "Android"],
+    githubUrl: "https://github.com/ChickenSoup269/ProjectAndroid1",
+    liveUrl: null,
+    hasDetail: false,
+  },
+  {
+    id: "bot-discord",
+    title: "Discord Bot",
+    description:
+      "Một bot tùy chỉnh cho Discord để tự động hóa các tác vụ và thêm chức năng mới cho máy chủ.",
+    techStack: ["Python", "discord.py", "API"],
+    githubUrl: "https://github.com/ChickenSoup269/bot-discord",
+    liveUrl: null,
+    hasDetail: false,
+  },
+]
 
 const ITEMS_PER_PAGE = 6
 
 export default function OtherProjects() {
+  const { t } = useLanguage()
   const [currentPage, setCurrentPage] = useState(1)
 
   // 2. LOGIC PHÂN TRANG
@@ -63,43 +108,54 @@ export default function OtherProjects() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-16 min-h-screen flex flex-col">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Other Noteworthy Projects</h1>
-        <p className="text-muted-foreground">
-          Các dự án mã nguồn mở, experiments và những thứ thú vị khác.
-        </p>
+        <h1 className="text-4xl font-bold mb-4">{t("otherProjectsTitle")}</h1>
+        <p className="text-muted-foreground">{t("otherProjectsDesc")}</p>
       </div>
 
       {/* 3. GRID PROJECTS */}
-      {/* mode="wait": Đợi animation cũ xong mới hiện cái mới */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentPage} // Key thay đổi để kích hoạt animation lại
+          key={currentPage}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1"
         >
-          {currentProjects.map((project, idx) => (
+          {currentProjects.map((project) => (
             <Card
               key={project.id}
               className="flex flex-col h-full hover:border-primary/50 hover:shadow-lg transition-all duration-300 group bg-card/50 backdrop-blur-sm"
             >
               <CardHeader>
                 <div className="flex justify-between items-start">
-                  {/* Icon Folder */}
                   <div className="p-2 bg-primary/10 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                     <Folder className="w-6 h-6" />
                   </div>
 
-                  {/* Links (Github / External) */}
-                  <div className="flex gap-2">
-                    <Link
-                      href={project.githubUrl}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <Github className="w-5 h-5" />
-                    </Link>
+                  <div className="flex gap-3 items-center">
+                    {project.githubUrl && (
+                      <Link
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label="GitHub Repository"
+                      >
+                        <Github className="w-5 h-5" />
+                      </Link>
+                    )}
+                    {project.liveUrl && (
+                      <Link
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label="Live Demo"
+                      >
+                        <ExternalLink className="w-5 h-5" />
+                      </Link>
+                    )}
                   </div>
                 </div>
 
@@ -113,7 +169,6 @@ export default function OtherProjects() {
                   {project.description}
                 </p>
 
-                {/* Tech Stack Badges */}
                 <div className="flex flex-wrap gap-2 mt-auto">
                   {project.techStack.map((tech) => (
                     <Badge
@@ -127,18 +182,20 @@ export default function OtherProjects() {
                 </div>
               </CardContent>
 
-              <CardFooter className="pt-0">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-between hover:bg-primary/5 px-2"
-                  asChild
-                >
-                  <Link href={`/projects/${project.id}`}>
-                    <span className="text-sm">View Detail</span>
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-              </CardFooter>
+              {project.hasDetail && (
+                <CardFooter className="pt-0">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between hover:bg-primary/5 px-2"
+                    asChild
+                  >
+                    <Link href={`/projects/${project.id}`}>
+                      <span className="text-sm">View Detail</span>
+                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
+                </CardFooter>
+              )}
             </Card>
           ))}
         </motion.div>
@@ -153,12 +210,12 @@ export default function OtherProjects() {
             disabled={currentPage === 1}
             className="w-32"
           >
-            <ChevronLeft className="w-4 h-4 mr-2" /> Previous
+            <ChevronLeft className="w-4 h-4 mr-2" /> {t("paginationPrevious")}
           </Button>
 
           <span className="text-sm font-medium text-muted-foreground">
-            Page{" "}
-            <span className="text-foreground font-bold">{currentPage}</span> of{" "}
+            {t("paginationPage")}{" "}
+            <span className="text-foreground font-bold">{currentPage}</span> {t("paginationOf")}{" "}
             {totalPages}
           </span>
 
@@ -168,7 +225,7 @@ export default function OtherProjects() {
             disabled={currentPage === totalPages}
             className="w-32"
           >
-            Next <ChevronRight className="w-4 h-4 ml-2" />
+            {t("paginationNext")} <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       )}

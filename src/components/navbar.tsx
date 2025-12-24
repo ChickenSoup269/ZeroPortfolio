@@ -41,7 +41,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         <Link
           href="/"
-          className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600"
+          className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600 animate-gradient"
         >
           Zero Portfolio
         </Link>
@@ -63,7 +63,7 @@ export default function Navbar() {
             value={language}
             onValueChange={(value: "en" | "vi") => setLanguage(value)}
           >
-            <SelectTrigger className="w-[80px] md:w-[100px] h-9">
+            <SelectTrigger className="w-[120px] h-9 shadow-md">
               <SelectValue placeholder="Lang" />
             </SelectTrigger>
             <SelectContent>
@@ -74,7 +74,7 @@ export default function Navbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Button variant="ghost" size="icon" className="h-9 w-9 shadow-md">
                 <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 <span className="sr-only">Toggle theme</span>
@@ -98,7 +98,7 @@ export default function Navbar() {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative h-9 w-9 rounded-full"
+                  className="relative h-9 w-9 rounded-full shadow-md"
                 >
                   <Avatar className="h-9 w-9 border transition-opacity hover:opacity-80">
                     <AvatarImage
