@@ -6,14 +6,6 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { Youtube, ArrowRight, Play, Eye } from "lucide-react"
 import { projectsData } from "@/lib/projectsData" // Sử dụng dữ liệu tập trung
 
 // --- Animation Variants ---
@@ -22,15 +14,6 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: { staggerChildren: 0.15, delayChildren: 0.2 },
-  },
-}
-
-const cardVariants = {
-  hidden: { y: 50, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 100, damping: 15 },
   },
 }
 
