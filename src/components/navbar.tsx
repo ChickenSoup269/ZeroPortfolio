@@ -9,6 +9,7 @@ import { useTheme } from "next-themes"
 import Link from "next/link"
 
 import { useLanguage } from "@/app/LanguageContext" // Import hook
+import { useFont } from "@/app/FontContext"
 
 import { Button } from "@/components/ui/button"
 
@@ -46,10 +47,7 @@ import CV from "@/app/image/CV.png"
 export default function Navbar() {
   const { setTheme } = useTheme()
   const { language, setLanguage, t } = useLanguage() // Lấy t từ context
-
-  function setFont(arg0: string): void {
-    throw new Error("Function not implemented.")
-  }
+  const { setFont } = useFont()
 
   return (
     <header className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm z-50">
