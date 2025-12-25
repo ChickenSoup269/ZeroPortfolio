@@ -17,6 +17,19 @@ const containerVariants = {
   },
 }
 
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 120,
+      damping: 12,
+    },
+  },
+}
+
 export default function FeaturedProjects() {
   const { t } = useLanguage()
   return (
@@ -49,7 +62,7 @@ export default function FeaturedProjects() {
           animate="visible"
         >
           {projectsData.map((project) => (
-            <motion.div key={project.slug}>
+            <motion.div key={project.slug} variants={itemVariants}>
               <Card className="group relative h-80 w-full overflow-hidden rounded-xl border-2 border-transparent hover:border-primary/50 shadow-lg transition-all duration-300">
                 {/* Lớp ảnh nền */}
                 <Image
