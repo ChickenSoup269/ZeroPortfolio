@@ -40,14 +40,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { useFont } from "@/app/FontContext"
+import Image from "next/image"
+import CV from "@/app/image/CV.png"
 
 export default function Navbar() {
   const { setTheme } = useTheme()
-
   const { language, setLanguage, t } = useLanguage() // Lấy t từ context
-
-  const { font, setFont } = useFont()
 
   return (
     <header className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm z-50">
@@ -196,11 +194,7 @@ export default function Navbar() {
               </DialogHeader>
 
               <div className="flex-1 overflow-auto bg-muted/20 p-4 flex items-center justify-center">
-                <img
-                  src="https://marketplace.canva.com/EAFRuCp3DcY/1/0/1131w/canva-black-white-minimalist-cv-resume-f5JNR-K5jjw.jpg"
-                  alt="My CV"
-                  className="max-w-full h-auto shadow-2xl rounded-md border"
-                />
+                <Image width={400} height={400} src={CV} alt="cv" />
               </div>
             </DialogContent>
           </Dialog>
