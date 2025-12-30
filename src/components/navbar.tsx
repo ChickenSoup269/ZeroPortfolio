@@ -192,7 +192,7 @@ export default function Navbar() {
                   <Link href="/other-projects">{t("otherProjects")}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuLabel>Language</DropdownMenuLabel>
+                <DropdownMenuLabel className="bg-primary text-primary-foreground rounded-md px-3 py-1 text-sm font-medium w-fit my-1 flex">Language</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => setLanguage("en")}>
                   English
                 </DropdownMenuItem>
@@ -200,7 +200,7 @@ export default function Navbar() {
                   Tiếng Việt
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuLabel>Font</DropdownMenuLabel>
+                <DropdownMenuLabel className="bg-primary text-primary-foreground rounded-md px-3 py-1 text-sm font-medium w-fit my-1 flex">Font</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => setFont("default")}>
                   Default
                 </DropdownMenuItem>
@@ -208,7 +208,7 @@ export default function Navbar() {
                   Gohu
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuLabel>Theme</DropdownMenuLabel>
+                <DropdownMenuLabel className="bg-primary text-primary-foreground rounded-md px-3 py-1 text-sm font-medium w-fit my-1 flex">Theme</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => setTheme("light")}>
                   {t("light")}
                 </DropdownMenuItem>
@@ -219,7 +219,7 @@ export default function Navbar() {
                   {t("system")}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuLabel>Profile</DropdownMenuLabel>
+                <DropdownMenuLabel className="bg-primary text-primary-foreground rounded-md px-3 py-1 text-sm font-medium w-fit my-1 flex">Profile</DropdownMenuLabel>
                 <DropdownMenuItem asChild>
                   <Link
                     href="https://github.com/ChickenSoup269"
